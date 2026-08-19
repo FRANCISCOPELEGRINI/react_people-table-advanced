@@ -33,14 +33,19 @@ export const filtro = (var1: Person[], searchParams: URLSearchParams) => {
     }
   }
 
-  const query = searchParams.get('query');
+  const query = searchParams.get('query')?.toLocaleLowerCase();
 
   if (query) {
-    people = people.filter(r =>
-      r.name.toLocaleLowerCase().includes(query.toLocaleLowerCase()),
+    people = people.filter(person =>
+      [person.name, person.motherName, person.fatherName].some(field =>
+        field?.toLocaleLowerCase().includes(query),
+      ),
     );
-    newTodo = newTodo.filter(r =>
-      r.name.toLocaleLowerCase().includes(query.toLocaleLowerCase()),
+
+    newTodo = newTodo.filter(person =>
+      [person.name, person.motherName, person.fatherName].some(field =>
+        field?.toLocaleLowerCase().includes(query),
+      ),
     );
   }
 

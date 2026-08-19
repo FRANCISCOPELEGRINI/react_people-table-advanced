@@ -32,7 +32,7 @@ export const PeopleFilters = () => {
 
   const verificador = () => {
     return (
-      searchParams.get('centuries') ||
+      searchParams.getAll('centuries').length > 0 ||
       searchParams.get('sex') ||
       searchParams.get('query')
     );
@@ -112,7 +112,16 @@ export const PeopleFilters = () => {
       </div>
 
       <div className="panel-block">
-        <a className="button is-link is-outlined is-fullwidth" href="#/people">
+        <a
+          className="button is-link is-outlined is-fullwidth"
+          onClick={() => {
+            searchParams.delete('sex');
+            setInputValue('');
+            searchParams.delete('query');
+            searchParams.delete('centuries');
+            setSearchParams(searchParams);
+          }}
+        >
           Reset all filters
         </a>
       </div>

@@ -13,6 +13,7 @@ export const PeopleTable = () => {
   const [personList, setPersonList] = useState<Person[]>([]);
   const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
+  const [definedList, setDefinedList] = useState<Person[]>([]);
   const [sorts, setSorts] = useState([
     {
       type: 'Name',
@@ -78,6 +79,7 @@ export const PeopleTable = () => {
       try {
         let newTodo = await getPeople();
 
+        setDefinedList(newTodo);
         let people: Person[] = [];
 
         newTodo = filtro(newTodo, searchParams)[1];
@@ -102,14 +104,12 @@ export const PeopleTable = () => {
     };
 
     getData();
-
-    getData();
   }, [searchParams]);
   const returnPais = (infos: Person, paiouMae: string) => {
     if (paiouMae === 'mae') {
-      return personList.find(r => r.name === infos.motherName);
+      return definedList.find(r => r.name === infos.motherName);
     } else {
-      return personList.find(r => r.name === infos.fatherName);
+      return definedList.find(r => r.name === infos.fatherName);
     }
   };
 

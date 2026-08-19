@@ -9,7 +9,7 @@ export const ordenar = (var1: Person[], searchParams: URLSearchParams) => {
         sortVar.sort((a, b) => a.name.localeCompare(b.name));
         break;
       case 'sex':
-        sortVar.sort((a, b) => b.sex.localeCompare(a.sex));
+        sortVar.sort((a, b) => a.sex.localeCompare(b.sex));
         break;
       case 'born':
         sortVar.sort((a, b) => a.born - b.born);
