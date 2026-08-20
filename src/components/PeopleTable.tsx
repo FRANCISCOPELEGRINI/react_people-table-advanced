@@ -32,24 +32,34 @@ export const PeopleTable = () => {
       direction: 'no',
     },
   ]);
-  const setarDirecao = (direction: string): string => {
-    switch (direction) {
-      case 'no':
-        return 'up';
-      case 'up':
-        return 'down';
-      case 'down':
-        return 'no';
+  const setarDirecao = (): string => {
+    const query = searchParams.get('sort');
+
+    if (!searchParams.get('sort')) {
+      return 'up';
+    } else if (query && searchParams.get('order') !== 'desc') {
+      return 'down';
     }
 
-    return '';
+    return 'no';
+
+    // switch (direction) {
+    //   case 'no':
+    //     return 'up';
+    //   case 'up':
+    //     return 'down';
+    //   case 'down':
+    //     return 'no';
+    // }
+
+    // return '';
   };
 
   const setOrdamento = (parametro: SortType) => {
     setSorts(prev =>
       prev.map(sort =>
         sort.type === parametro.type
-          ? { ...sort, direction: setarDirecao(parametro.direction) }
+          ? { ...sort, direction: setarDirecao() }
           : sort,
       ),
     );
@@ -113,6 +123,18 @@ export const PeopleTable = () => {
     }
   };
 
+  const definirClass = (var1: SortType) => {
+    if (searchParams.get('sort') !== var1.type.toLocaleLowerCase()) {
+      return '';
+    } else {
+      if (searchParams.get('order')) {
+        return '-down';
+      }
+
+      return '-up';
+    }
+  };
+
   return (
     <>
       {personList.length > 0 && (
@@ -129,9 +151,7 @@ export const PeopleTable = () => {
                       {sortElement.type}
                       <a
                         onClick={() => {
-                          const novaDirecao = setarDirecao(
-                            sortElement.direction,
-                          );
+                          const novaDirecao = setarDirecao();
 
                           setOrdamento(sortElement);
                           setSeta(sortElement.type, novaDirecao);
@@ -139,7 +159,7 @@ export const PeopleTable = () => {
                       >
                         <span className="icon">
                           <i
-                            className={`fas fa-sort${sortElement.direction === 'no' ? '' : sortElement.direction === 'up' ? '-up' : '-down'}`}
+                            className={`fas fa-sort${definirClass(sortElement)}`}
                           />
                         </span>
                       </a>
